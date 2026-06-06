@@ -185,12 +185,12 @@ export default async function Home({searchParams}: { searchParams?: SearchParams
                             speed={48}
                             className="font-mono text-xs uppercase tracking-[0.18em] text-amber-300"
                         />
-                        <TextEffect preset="fade-in-blur" speedSegment={0.3} as="h1" className="mt-5 text-balance text-5xl font-semibold leading-none md:text-7xl xl:text-8xl">
+                        <h1 className="mt-5 text-balance text-5xl font-semibold leading-none md:text-7xl xl:text-8xl">
                             {t.heroTitleA}
-                        </TextEffect>
-                        <TextEffect preset="fade-in-blur" speedSegment={0.3} as="h1" className="text-balance text-5xl font-semibold leading-none text-muted-foreground md:text-7xl xl:text-8xl">
+                        </h1>
+                        <h1 className="text-balance text-5xl font-semibold leading-none text-muted-foreground md:text-7xl xl:text-8xl">
                             {t.heroTitleB}
-                        </TextEffect>
+                        </h1>
                         <TextEffect per="line" preset="fade-in-blur" delay={0.45} speedSegment={0.3} as="p" className="mt-8 max-w-2xl text-pretty text-lg text-muted-foreground">
                             {t.heroCopy}
                         </TextEffect>

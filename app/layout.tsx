@@ -41,7 +41,7 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
         <body className="font-sans antialiased">
-        <div className='absolute w-full h-dvh max-h-155 sm:max-h-115 md:max-h-125 lg:max-h-190 xl:max-h-195'>
+        <div className="pointer-events-none fixed inset-x-0 top-0 z-0 h-dvh w-full max-h-155 sm:max-h-115 md:max-h-125 lg:max-h-190 xl:max-h-195">
             <Dither
                 waveColor={[0.45, 0.36, 0.24]}
                 disableAnimation={false}
@@ -57,7 +57,9 @@ export default function RootLayout({
         <Suspense fallback={null}>
             <HeroHeader/>
         </Suspense>
-        {children}
+        <div className="relative z-10">
+            {children}
+        </div>
         <FooterSection/>
         <Analytics/>
         </body>

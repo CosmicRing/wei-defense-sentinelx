@@ -1,352 +1,199 @@
-# v0 IRL Event Landing Template
+# WEI Defense
 
-A customizable landing page template for hosting v0 IRL events around the world. This template was originally created for the "Prompt to Production" events and includes an interactive 3D lanyard generator, event agenda, sponsor showcase, and registration CTAs.
+WEI Defense 是一个基于 Next.js 的自主安保基础设施官网原型，主题围绕无人机巡防、炼油厂/关键基础设施防护、分层响应、指挥中心与数字孪生任务流。
 
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app)
-[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org)
+当前项目已经从早期静态页升级为 Next.js 应用。请使用本地开发服务器访问，不要再用根目录的 `index.html` 作为主入口。
 
----
+## 当前状态
 
-## Table of Contents
+- 主站首页：`/`
+- SentinelX 任务流程页：`/sentinelx`
+- Open Graph API：`/api/og`
+- 遗留/实验页面：`/lanyard`
+- 本地开发地址：`http://127.0.0.1:3000`
 
-- [Features](#features)
-- [Quick Start](#quick-start)
-- [Customization Guide](#customization-guide)
-  - [1. Event Information](#1-event-information)
-  - [2. Lanyard Customization](#2-lanyard-customization)
-  - [3. Sponsors and Partners](#3-sponsors-and-partners)
-  - [4. Agenda](#4-agenda)
-  - [5. Metadata and SEO](#5-metadata-and-seo)
-  - [6. Footer Links](#6-footer-links)
-- [Creating Custom Lanyard Textures](#creating-custom-lanyard-textures)
-- [Project Structure](#project-structure)
-- [Deployment](#deployment)
-- [Credits](#credits)
+## 技术栈
 
----
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Motion
+- Lucide React
+- Three.js / React Three Fiber 相关依赖
+- Vercel Analytics
 
-## Features
+## 快速开始
 
-- Interactive 3D lanyard with physics simulation (React Three Fiber + Rapier)
-- Personalized badge generator with dark/light variants
-- Export badge as PNG
-- Shareable lanyard URLs with encryption
-- Animated text effects and transitions
-- Responsive design (mobile-first)
-- Dithered animated background
-- Sponsor/partner logo carousel
-
----
-
-## Quick Start
-
-### Option 1: Fork on GitHub
-
-1. Fork this repository
-2. Clone your fork locally
-3. Install dependencies: `npm install` or `pnpm install`
-4. Run the development server: `npm run dev`
-5. Open [http://localhost:3000](http://localhost:3000)
-
-### Option 2: Use with v0
-
-1. Go to [v0.app](https://v0.app)
-2. Import this repository or start a new chat
-3. Make changes using natural language prompts
-4. Deploy directly to Vercel
-
----
-
-## Customization Guide
-
-### 1. Event Information
-
-#### Hero Section (`components/hero-section.tsx`)
-
-Update the main event details:
-
-```tsx
-// Line ~35-38: Event date and location
-<DecryptedText
-    text="Thursday February 5th, 2026 - New York City"  // <-- Change this
-    ...
-/>
-
-// Lines ~40-50: Event title (currently "Prompt to Production")
-<TextEffect ...>
-    Prompt           // <-- Change line 1
-</TextEffect>
-<TextEffect ...>
-    to Production    // <-- Change line 2
-</TextEffect>
-
-// Lines ~52-57: Event description
-<TextEffect ...>
-    v0 is getting ready to launch its biggest product update yet...  // <-- Change this
-</TextEffect>
-
-// Lines ~66-82: CTA buttons
-<Button ...>
-    <Link href="#link">  // <-- Update registration link
-        Register Now
-    </Link>
-</Button>
-<Button ...>
-    <Link href="#link">  // <-- Update contact link
-        Contact Host
-    </Link>
-</Button>
+```bash
+npm install
+npm run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-### 2. Lanyard Customization
+打开：
 
-#### Changing City and Date on the Lanyard
-
-The lanyard displays dynamic city and date text. Update these in `components/lanyard-with-controls.tsx`:
-
-```tsx
-// Lines 189-190 in the CardTemplate component
-<CardTemplate
-    ref={cardTemplateRef}
-    userName={inputValue}
-    variant={cardVariant}
-    onTextureReady={handleTextureReady}
-    city='guadalajara'    // <-- Change to your city
-    date='05.02.2026'     // <-- Change to your event date (DD.MM.YYYY format)
-/>
+```text
+http://127.0.0.1:3000
 ```
 
-#### Social Share Message (`components/lanyard-with-controls.tsx`)
+构建检查：
 
-Update the share message for social media (around line 113):
-
-```tsx
-const shareMessage = appliedName
-    ? `I'll be at @v0 Prompt to Production Guadalajara! Check out my personalized lanyard`  // <-- Change this
-    : `Check out v0 IRL Guadalajara! Create your personalized event lanyard`;  // <-- And this
+```bash
+npx tsc --noEmit
+npm run build
 ```
 
-#### Export Filename (`components/card-template.tsx`)
+注意：`package.json` 里目前有 `npm run lint`，但项目没有安装 `eslint`，所以该命令会失败，除非后续补上 ESLint 配置与依赖。
 
-Update the downloaded file name (around line 159):
+## 页面结构
 
-```tsx
-link.download = `v0-guadalajara-${userName || "card"}.png`;  // <-- Change "guadalajara" to your city
+### 首页 `/`
+
+文件：`app/page.tsx`
+
+主要内容：
+
+- Hero：炼油厂安全任务主视觉
+- Solutions：油气、低空安全、多域防御解决方案
+- Product Lines：HU / XQ / YL / Dock / XJ / SentinelX OS 产品体系
+- Platform：指挥中心、数字孪生、多域数据融合
+- Case Solution：炼油厂分层响应链路
+- Framework：无人机安保任务状态机
+- CTA：联系与方案构建入口
+
+首页支持查询参数切换语言：
+
+```text
+/?lang=en
+/?lang=zh
+/?lang=ar
+/?lang=la
+/?lang=sl
 ```
 
-#### OG Images for Social Media (`app/api/og/route.tsx`)
+### SentinelX `/sentinelx`
 
-When someone shares a personalized lanyard, dynamic Open Graph images are generated. Update the event details (around lines 57-58):
+文件：`app/sentinelx/page.tsx`
 
-```tsx
-const EVENT_CITY = "GUADALAJARA";  // <-- Change to your city (uppercase)
-const EVENT_DATE = "FEBRUARY 2026";  // <-- Change to your event date
+用途：
+
+- 展示 SentinelX / 铜雀台任务工作流
+- 描述炼油厂无人机安防的状态链路
+- 展示 15 个任务阶段：待命、巡防、侦察、异常发现、目标识别、告警、跟踪、警告、分层响应、效果评估、复位等
+
+同样支持：
+
+```text
+/sentinelx?lang=en
+/sentinelx?lang=zh
 ```
 
-These values appear on the OG images when sharing lanyard URLs on Twitter, Facebook, LinkedIn, Discord, etc.
+## 关键组件
 
-### 3. Sponsors and Partners
+- `components/header.tsx`：顶部导航、多语言入口、WEI 标识
+- `components/footer.tsx`：底部导航
+- `components/global-ops-map.tsx`：首页全球态势 SVG 背景
+- `components/mission-state-machine.tsx`：无人机安防任务状态机
+- `components/Dither.tsx`：全局动态背景
+- `components/DecryptedText.tsx`：解密文字动效
+- `components/motion-primitives/text-effect.tsx`：滚动/入场文字动效
+- `components/ui/*`：基础 UI 组件
 
-#### Logo Carousel (`components/hero-section.tsx`)
+## 资产目录
 
-Add or modify sponsor logos in the InfiniteSlider (around line 92):
+主要图片和可视化资产：
 
-```tsx
-<InfiniteSlider speedOnHover={20} speed={40} gap={112}>
-    <div className="flex items-center">
-        <V0Icon size={35} ... />
-    </div>
-    <div className="flex items-center">
-        <VercelWordmarkIcon size={20} ... />
-    </div>
-    <div className="flex items-center">
-        <GlobantLogoIcon size={20} ... />  // <-- Add/remove sponsor icons
-    </div>
-    // Add more sponsors here
-</InfiniteSlider>
+```text
+public/generated/
+assets/generated/
+assets/extracted/
+assets/
 ```
 
-To add a new sponsor icon:
-1. Create the icon component in `components/icons/`
-2. Import it in `hero-section.tsx`
-3. Add it to the InfiniteSlider
+当前首页引用的重点资产：
 
-### 4. Agenda
+- `public/generated/autonomous-product-family.png`
+- `public/generated/command-center-clean.png`
+- `public/generated/layered-response-overview.png`
 
-#### Event Schedule (`components/agenda.tsx`)
+其他公共资源：
 
-Modify the agenda items (around line 35):
+- `public/icon.svg`
+- `public/icon-light-32x32.png`
+- `public/icon-dark-32x32.png`
+- `public/apple-icon.png`
 
-```tsx
-<div className="pb-6">
-    <div className="font-medium space-x-2">
-        <span className='text-muted-foreground font-mono'>11:00</span>  // <-- Time
-        <span>Welcome Video</span>  // <-- Title
-    </div>
-    <p className="text-muted-foreground mt-4">
-        A special welcome from the v0 Team  // <-- Description
-    </p>
-</div>
-// Repeat for each agenda item
+## 样式与主题
+
+全局样式入口：
+
+```text
+app/globals.css
 ```
 
-### 5. Metadata and SEO
+项目使用 Tailwind CSS 4，并通过 CSS 变量定义暗色主题色：
 
-#### Page Metadata (`app/layout.tsx`)
+- `--background`
+- `--foreground`
+- `--card`
+- `--muted`
+- `--border`
 
-Update the site metadata (around line 14):
+旧静态页样式仍存在：
 
-```tsx
-export const metadata: Metadata = {
-    title: 'v0 IRL — Prompt to Production | NYC February 5th, 2026',  // <-- Page title
-    description: 'v0 is launching its biggest product update yet...',  // <-- Meta description
-    generator: 'v0.app',
-}
+```text
+index.html
+styles.css
+src/
 ```
 
-### 6. Footer Links
+这些文件不再是当前 Next.js 主站入口。如后续确认不需要，可以清理，避免误打开 `file:///E:/WEI Defense/index.html`。
 
-#### Footer Navigation (`components/footer.tsx`)
+## 已知注意事项
 
-Update the footer links array (around line 5):
+- 当前真实预览入口是 `http://127.0.0.1:3000`，不是根目录 `index.html`。
+- `npm run build` 可以通过。
+- `npx tsc --noEmit` 可以通过。
+- `npm run lint` 目前不可用，因为缺少 ESLint 依赖。
+- PowerShell 默认输出编码可能会把中文显示成乱码；文件本身是 UTF-8。
+- `README.md` 已经从原 v0 活动模板说明改为本项目说明。
 
-```tsx
-const links = [
-    { title: 'Vercel', href: 'https://vercel.com/' },
-    { title: 'v0', href: 'https://v0.dev/' },
-    { title: 'Meetup SDK', href: 'https://meetup-sdk.vercel.com/' },
-    { title: 'v0 IRL', href: 'https://v0.app/irl' },
-    // Add your own links here
-]
+## 推荐维护流程
+
+1. 修改页面或组件。
+2. 运行类型检查：
+
+   ```bash
+   npx tsc --noEmit
+   ```
+
+3. 运行生产构建：
+
+   ```bash
+   npm run build
+   ```
+
+4. 本地打开主站和 SentinelX 页面检查：
+
+   ```text
+   http://127.0.0.1:3000
+   http://127.0.0.1:3000/sentinelx
+   ```
+
+5. 如果后续要上线，优先使用 Vercel 或支持 Next.js App Router 的 Node 部署环境。
+
+## 部署
+
+生产构建：
+
+```bash
+npm run build
 ```
 
----
+启动生产服务：
 
-## Creating Custom Lanyard Textures
-
-The lanyard uses base texture images located in the public folder:
-
-- `/card.glb` - Lanyard 3D model, it includes the default card texture (dark) without customization
-- `/card-base-dark.png` - Dark variant card texture
-- `/card-base-light.png` - Light variant card texture
-
-### Using the Existing Textures
-
-The current textures include the "Prompt to Production" branding. To customize for your event while keeping this aesthetic:
-
-1. Update city and date via the `city` and `date` props in `lanyard-with-controls.tsx` (lines 189-190)
-2. The text is rendered dynamically on the canvas
-
-### Creating Your Own Textures
-
-Follow these steps if you want to create your own textures:
-1. Create your template using any design tool (Figma, Photoshop, etc)
-2. The layout has to be 1:1 aspect ratio (square)
-3. Consider safe zones for dynamic text placement (see attached figma file as an example of safe zones)
-4. Color considerations for dark/light variants (or more if you decide to extend the initial template)
-5. You need to modify the 3D texture (`card.blg`) as well so it renders the default texture on the initial load
-
-### How to edit `card.glb` (3D model) file
-
-1. Go to [this page](https://modelviewer.dev/editor/), drag and drop the `card.glb` file to preview the model
-2. Click on the palette icon tab, and under the **texture** option, load your texture image
-![Modify texture example](/public/modify-texture.png)
-3. Go back to the initial tab, and click **Download scene**
-![Export texture example](/public/export-texture.png)
-4. It'll download a zip file with all your model files. You just need to drag and drop the `card.glb` file and replace it into your `/public` folder.
-![Exported folder with texture file](/public/folder-texture.png)
-
-### Texture Specifications
-
-- **Dimensions:** 1376 x 1376 pixels (any 1:1 ratio works, the larger the better resolution will have)
-- **Format:** PNG with transparency support
-- **Files to replace:**
-  - `/public/card-base-dark.png`
-  - `/public/card-base-light.png`
-
-### Design Guidelines
-
-1. Keep the bottom ~400px area clear for the user's name
-2. Keep the top ~150px area clear for city/date text
-3. Ensure good contrast for text readability
-4. Test both dark and light variants
-
-### Template Files
-
-- [Figma template with safe zones](https://www.figma.com/design/uQPzmYgpWdI6xvK4qzaT7X/Untitled?node-id=0-1&t=ygsBkAQ4NTxKhiyh-1)
-
----
-
-## Project Structure
-
-```
-/
-├── app/
-│   ├── layout.tsx          # Root layout, metadata, fonts
-│   ├── page.tsx            # Home page composition
-│   ├── globals.css         # Global styles and theme tokens
-│   └── lanyard/
-│       └── page.tsx        # Shareable lanyard page
-├── components/
-│   ├── hero-section.tsx    # Main hero with event info
-│   ├── features-3.tsx      # Event highlights cards
-│   ├── agenda.tsx          # Event schedule
-│   ├── call-to-action.tsx  # Registration CTA section
-│   ├── footer.tsx          # Footer with links
-│   ├── header.tsx          # Navigation header
-│   ├── lanyard-with-controls.tsx  # Lanyard + customization UI
-│   ├── card-template.tsx   # Badge texture generator
-│   ├── Dither.tsx          # Animated background effect
-│   ├── DecryptedText.tsx   # Animated text reveal
-│   ├── ui/
-│   │   └── lanyard.tsx     # 3D lanyard component (R3F)
-│   ├── icons/              # SVG icon components
-│   └── motion-primitives/  # Animation components
-├── lib/
-│   └── utils.ts            # Utility functions
-├── types/                  # TypeScript definitions
-└── public/
-    ├── card-base-dark.png  # Dark lanyard texture
-    ├── card-base-light.png # Light lanyard texture
-    └── *.png               # Favicon and other assets
+```bash
+npm run start
 ```
 
----
-
-## Deployment
-
-### Deploy to Vercel
-
-The easiest way to deploy is with Vercel:
-
-1. Push your customized code to GitHub
-2. Import the repository on [Vercel](https://vercel.com/new)
-3. Vercel will automatically detect Next.js and configure the build
-
-### Environment Variables
-
-No environment variables are required for the base template.
-
----
-
-## Credits
-
-Built with:
-- [v0.app](https://v0.app) - AI-powered development
-- [Next.js](https://nextjs.org) - React framework
-- [Tailwind CSS](https://tailwindcss.com) - Styling
-- [React Three Fiber](https://r3f.docs.pmnd.rs/) - 3D rendering
-- [Rapier](https://rapier.rs/) - Physics simulation
-- [Tailark](https://tailark.com/) - UI components
-- [React Bits](https://reactbits.dev/) - Animation primitives
-- [shadcn/ui](https://ui.shadcn.com/) - UI components
-
----
-
-## License
-
-Feel free to use this template for your v0 IRL events. Attribution appreciated but not required.
-
----
-
-**Questions?** Open an issue or reach out to the v0 community.
+默认 `next start` 会使用 `.next` 构建产物。部署前请确认目标环境安装了 Node.js，并已执行依赖安装。
